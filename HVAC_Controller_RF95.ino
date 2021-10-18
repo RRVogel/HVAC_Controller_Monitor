@@ -30,7 +30,7 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 struct DataRX
 {
   uint16_t Amps;
-  uint16_t pressure;  
+  uint16_t pressure;
   uint16_t ODtemp;
   uint8_t duct_RH;
   uint8_t systemState;
@@ -44,6 +44,7 @@ struct DataTX
   bool ductControl;
   uint8_t humidSet;
 } MonitorData = {false, 35};
+
 float TempF;
 float Amps = 3.1;
 const int sensorPin = A1;
@@ -70,23 +71,22 @@ void setup() {
   pinMode (fanPin, INPUT);
   pinMode (ductPin, OUTPUT);
   pinMode (humidPin, OUTPUT);
-  digitalWrite(RFM95_RST, HIGH);
 
   FastLED.addLeds<WS2812, LED_PIN, RGB>(leds, NUM_LEDS);
   leds[0] = CRGB(0, 255, 0);
   FastLED.show();
-    // manual reset
+  //reset and setup RFM95
+  digitalWrite(RFM95_RST, HIGH);
+  // manual reset
   digitalWrite(RFM95_RST, LOW);
   delay(10);
   digitalWrite(RFM95_RST, HIGH);
   delay(200);
-  leds[0] = CRGB(0, 0, 0);
-  FastLED.show();
   rf95.init();
   rf95.setFrequency(RF95_FREQ);
   rf95.setTxPower(23, false);
-
-
+  leds[0] = CRGB(0, 0, 0);
+  FastLED.show();
 }
 //==========
 void loop() {
@@ -105,39 +105,32 @@ void loop() {
       rf95.waitPacketSent();
     }
   }
-  
-
-  //if (newData) {
-//    showData();
-    //newData = false;
-    //}
- 
+  //show status and control relays
   FastLED.show();
   digitalWrite(ductPin, MonitorData.ductControl);
   digitalWrite(humidPin, ControlData.humidControl);
-//  delay(2000);
-
 }
-
 //============
 void readSensors() {
   sensors.requestTemperatures();
   float temperature, humidity;
   currentMillis = millis();
-  if (currentMillis - prevMillis >= senseIntervalMillis) {
+  //read AM2315 every 2 seconds
+  if (currentMillis - prevMillis >= senseIntervalMillis)
+  {
     prevMillis = currentMillis;
     am2315.readTemperatureAndHumidity(&temperature, &humidity);
     ControlData.duct_RH = round(humidity);
   }
-  
-    
+  //read system state(low is on)
   heatState = digitalRead(heatPin);
   coolState = digitalRead(coolPin);
   fanControl = digitalRead(fanPin);
-
+  //read sensors, convert and assign ControlData values
   ControlData.pressure = round(analogRead(sensorPin));
   TempF = sensors.getTempFByIndex(0);
-  if(TempF < 0) {
+  if (TempF < 0)
+  {
     ControlData.negSign = true;
     TempF = abs(TempF);
   }
@@ -146,27 +139,26 @@ void readSensors() {
   Amps = readACCurrentValue();
   ControlData.Amps = round(Amps * 10.0);
   
-//  if (!fanControl) Amps = 6.2;
-//  else Amps = 4.1;
-  
-  if (!heatState) {
+  //determine what the present system state is
+  if (!heatState)
+  {
     ControlData.systemState = 1;
-    //      lastMode = 1;
     leds[0] = CRGB(0, 255, 0);
   }
-  else if (!coolState) {
+  else if (!coolState)
+  {
     ControlData.systemState = 0;
-    //     lastMode = 0;
     leds[0] = CRGB(0, 0, 255);
   }
-  else {
+  else
+  {
     ControlData.systemState = 2;
     leds[0] = CRGB(255, 0, 0);
   }
-
-  if (Amps > 4.5) fanState = true;
+  if (Amps > 5) fanState = true;
   else fanState = false;
   
+  //assign the humidity set point and humidifier relay state
   if (MonitorData.humidSet > 0) ControlData.RH_Set = MonitorData.humidSet;
   else if (TempF <= 20) ControlData.RH_Set = round(50 - ((50 - ControlData.ODtemp) / 2));
   else ControlData.RH_Set = 35;
@@ -174,26 +166,13 @@ void readSensors() {
   {
     ControlData.humidControl = true;
   }
-  if (ControlData.duct_RH >= MonitorData.humidSet || !fanState) {
+  if (ControlData.duct_RH >= MonitorData.humidSet || !fanState || (ControlData.systemState != 1 && !fanControl))
+  {
     ControlData.humidControl = false;
   }
 
 }
-//============
-void showData() {
-  Serial.println("RH%\tPSI\tTempF\tAmps\tTx10\tAmpsx10");
-  Serial.print(ControlData.duct_RH);
-  Serial.print("\t");
-  Serial.print(ControlData.pressure);
-  Serial.print("\t");
-  Serial.print(TempF);
-  Serial.print("\t");
-  Serial.print(Amps);
-  Serial.print("\t");
-  Serial.print(ControlData.ODtemp);
-  Serial.print("\t");
-  Serial.println(ControlData.Amps);
-  }
+//Gravity current sensor code
 //==============
 float readACCurrentValue()
 {
@@ -208,7 +187,7 @@ float readACCurrentValue()
   peakVoltage = peakVoltage / 5.0;
   voltageVirtualValue = peakVoltage * 0.707;
 
-  /*The circuit is amplified by 2 times, so it is divided by 2.*/
+  //  The circuit is amplified by 2 times, so it is divided by 2.
   voltageVirtualValue = (voltageVirtualValue / 1024 * VREF ) / 2.0;
 
   ACCurrentValue = voltageVirtualValue * ACTectionRange;
