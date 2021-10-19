@@ -216,7 +216,7 @@ I used the breadboard holder base plate to mount an Arduino MEGA 2560 with the A
 <p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.jpg). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
-![alt_text](images/image3.jpg "image_tooltip")
+![Picture of Monitor/Data Logger](/assets/HVAC_Monitor.jpg)
 
 
 **Parts list:**
