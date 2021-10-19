@@ -228,10 +228,10 @@ struct DataTX
   bool ductControl;
   uint8_t humidSet;
 } MonitorData = {false, 35};
-Next we have the function I used for the monitor to transmit data and request a reply from the controller along with the conversion of the float data from the controller:
+
 ```
 
-
+Next we have the function I used for the monitor to transmit data and request a reply from the controller along with the conversion of the float data from the controller:
 
 ```
 void exchangeData()
@@ -288,4 +288,4 @@ if (rf95.available())
 * I had to add a watchdog timer to the code because the monitor was locking up after hours to days of running. The EEPROM updates the settings on reboot.
 * If anyone can tell me why this is happening, I would be grateful, but It works fine as is.
 * I commented in the code fairly regularly, the rest is mostly printing the display and logging the data I want.
-* I log the data at 20 minute intervals when the system is running and at 20 seconds if it is.
+* I log the data at 20 minute intervals when the system is not running and at 20 seconds if it is.
