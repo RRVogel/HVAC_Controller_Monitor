@@ -1,3 +1,8 @@
+
+// SPDX-FileCopyrightText: YYYY Rick Vogel for Adafruit Industries
+//
+// SPDX-License-Identifier: MIT
+
 #include <SPI.h>
 #include <RH_RF95.h>
 #include <Wire.h>
