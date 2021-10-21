@@ -1,4 +1,4 @@
-    **Controlling  a zone damper and humidifier in my HVAC system.**
+#    **Controlling  a zone damper and humidifier in my HVAC system.**
 
 I wanted to be able to control the duct damper to the basement that my room is in. The system in our house is forced air oil heating with A/C. There are 2 existing thermostats that control the system through a zone controller.
 
@@ -14,7 +14,7 @@ Over this past summer I redesigned the project to use an Adafruit feather M0 wit
 
 I will include a circuit diagram when I have time, but for now I will go over how to detect the workings of the HVAC system and how to control it.
 
-**	Safely detecting AC voltage:**
+**Safely detecting AC voltage:**
 
 The best method I found was to use a H11AA1 Optoisolator with this circuit with the slight alteration of adding an external 10K pullup instead of the internal one shown in this diagram that I found online:
 
@@ -24,7 +24,7 @@ The best method I found was to use a H11AA1 Optoisolator with this circuit with 
 
 I use 3 of these circuits to detect the operation of the fan, heat, and cool signals going to the air handler/furnace.
 
-**	Operation of Air Handlers:**
+**Operation of Air Handlers:**
 
 There are a few types of air handlers that you might have:
 
@@ -124,7 +124,7 @@ The wiring conventions for the thermostat, thermostat wires, and equipment are:
 </table>
 
 
-		**Controlling and monitoring other parts of the system:**
+**Controlling and monitoring other parts of the system:**
 
 
 
@@ -134,9 +134,9 @@ The wiring conventions for the thermostat, thermostat wires, and equipment are:
 * HEPA filter that I installed a differential pressure sensor to monitor.
 * I installed a non-contact AC current sensor to monitor the amp draw of the furnace so I know when the fan is on.
 
-	**How I implemented the control and monitoring of my system:**
+**How I implemented the control and monitoring of my system:**
 
-		**Controller wiring and connections:**
+**Controller wiring and connections:**
 
 
 
@@ -159,7 +159,7 @@ The wiring conventions for the thermostat, thermostat wires, and equipment are:
 ![Picture of controller installed on HVAC duct](/assets/HVAC_Controller.jpg)
 
 
-**		Monitor and data logger setup:**
+**Monitor and data logger setup:**
 
 I used the breadboard holder base plate to mount an Arduino MEGA 2560 with the Adafruit TFT shield on it . The breadboard holds the RF95 breakout along with the AH20 module, the RTC, and a traffic light led display so I can see the status from across the room. I use it as is, but plan an enclosure in the future.
 
