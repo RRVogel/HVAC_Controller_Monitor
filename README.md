@@ -152,7 +152,7 @@ The wiring conventions for the thermostat, thermostat wires, and equipment are:
 * I used 2.5mm blue pneumatic tubing that came with ⅛” NPT male threaded adapters for it along with ⅛” NPT nuts to attach a pressure tap before and after my HEPA filter. The pressure port on the sensor is attached to the duct before the air goes into the filter and the vacuum after.
 * The AM2315 comes with a through hole mount and gasket so it is mounted to the intake duct upstream from the humidifier bypass duct. I extended the wire it came with with some 4 conductor phone wire to one of the 5 pin aircraft connector plugs. The one wire temperature sensor was extended about 30 feet and connected the same way.
 
-		**Picture of controller installed on HVAC duct:**
+#####	**Picture of controller installed on HVAC duct:**
 
 
 
@@ -165,7 +165,7 @@ I used the breadboard holder base plate to mount an Arduino MEGA 2560 with the A
 
 		
 
-		**Picture of Monitor/Data Logger:**
+#####		**Picture of Monitor/Data Logger:**
 
 
 ![Picture of Monitor/Data Logger](/assets/HVAC_Monitor.jpg)
