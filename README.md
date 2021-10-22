@@ -203,7 +203,7 @@ I used the breadboard holder base plate to mount an Arduino MEGA 2560 with the A
 
 **Programming:**
 
-`I used the Radiohead library that Adafruit recommends.`I decided to use structs to exchange data between the monitor and the controller. I found that it works fine if you limit the variables to unsigned integers and booleans. When I tried it with floats or integers it gave nonsense returns. 
+I used the Radiohead library that Adafruit recommends.	I decided to use structs to exchange data between the monitor and the controller. I found that it works fine if you limit the variables to unsigned integers and booleans. When I tried it with floats or integers it gave nonsense returns. 
 
 I converted the OD temperature and amps reading to a uint16_t by multiplying by 10 at the controller, and taking the absolute value, and using a bool for the presence of a negative sign for the temperature. 
 
